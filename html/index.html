@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP8266 Servo Control</title>
+
+    <!-- 引入Bootstrap样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">ESP8266 Servo Control</h1>
+
+    <div class="row mb-3">
+        <div class="col">
+            <button class="btn btn-primary" onclick="sendCommand('rotate_servo1_left')">Rotate Servo 1 Left</button>
+            <button class="btn btn-primary" onclick="sendCommand('rotate_servo1_right')">Rotate Servo 1 Right</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" onclick="sendCommand('rotate_servo2_up')">Rotate Servo 2 Up</button>
+            <button class="btn btn-primary" onclick="sendCommand('rotate_servo2_down')">Rotate Servo 2 Down</button>
+        </div>
+    </div>
+</div>
+
+<!-- 引入Bootstrap和Popper.js（必须）的JavaScript插件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function sendCommand(command) {
+        // 发送指令到 ESP8266
+        const encodedCommand = encodeURIComponent(command);
+        fetch(`http://192.168.31.22/command?command=${encodedCommand}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // 可以在这里添加一些用户反馈，比如显示成功消息
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // 可以在这里添加一些用户反馈，比如显示错误消息
+            });
+    }
+</script>
+
+</body>
+</html>
